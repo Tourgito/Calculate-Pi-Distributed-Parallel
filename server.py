@@ -40,7 +40,7 @@ def main(argv):
     mod,div = divmod(numberOfSteps,3) #briskw to div kai to mod sto diasthma tou numberOfSteps me bash twn arithmw twn client    
   
 
-    run_time = connect_to_client(numberOfSteps)
+    run_time = connect_to_client(numberOfSteps)    
 
 
     print('Sequential program results with {} steps' .format(numberOfSteps))
@@ -50,38 +50,41 @@ def main(argv):
 
     
 
-#ta threads epikoinwnoun me tous client kai upologizei to teliko pi      
+#Sends the requsts of the server for each client and takes the answer of the client and sum them to calculate the Pi
 def send_to_client(conn,ip,counter,numberOfSteps,num,mod,div):
+
     global pi
    
-    if counter != 2:  # se ayth thn if mpainoun oloi ektos tvn teleutaio client  
+    if counter != 2: #The two first client    
         
         conn.sendall(f'{numberOfSteps}-{mod}-0-{num}'.encode('utf-8'))
         reply = conn.recv(1204).decode('utf-8')
         float_reply = float(reply) 
-        pi += float_reply
+        pi += float_reply   # adds the answer of the client, which is the part of the Pi that it calculated 
   
     
-    else:  #mpainei o teleutaios client
+    else:  #the third client
             
         conn.sendall(f'{numberOfSteps}-{mod}-{div}-{num}'.encode('utf-8'))
         reply = conn.recv(1204).decode('utf-8')
         float_reply = float(reply) 
-        pi += float_reply
+        pi += float_reply   # adds the answer of the client, which is the part of the Pi that it calculated
      
      
     
 
-        
-#sundeei tous client me ton serverkai dimiourgei kai trexei ta threads kai epistrefei twn xrono ulopoihshs        
+# Run the server, connect with the clients, creates the threads that each of them is a request for a client and runs the threads
 def connect_to_client(numberOfSteps):
         global counter,mod,div
-        threads = []  #lista opou apothikeuwnte ta threads
+        threads = []
+        
+        # Run the server
         conne_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         conne_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         conne_socket.bind(('localhost', 8999))
-        conne_socket.listen(5)
+        conne_socket.listen(5) 
 
+        # Creates the threads that send parallel the requests to the clients
         while counter < 3:
           global num  
           conn, ip = conne_socket.accept()
@@ -92,21 +95,20 @@ def connect_to_client(numberOfSteps):
           num += mod
        
 
-
+        #Run the threads and calculate the time thath the clients needed to calculate the Pi
         t1 = perf_counter()
-
-        for thread in threads: #trexw ta thread
+        for thread in threads: 
             thread.start()  
         
         for thread in threads: 
             thread.join()
-
         t2 = perf_counter()
-        run_time = t2 - t1
 
-        conne_socket.close()
+        run_time = t2 - t1 # the time that the clients did to calculate the Pi
 
-        return run_time
+        conne_socket.close() # Shut down the server
+
+        return run_time 
         
 if __name__ == '__main__':
     main(argv)

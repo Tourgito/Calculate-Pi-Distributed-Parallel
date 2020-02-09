@@ -7,13 +7,15 @@ Created on Sat May 25 20:23:05 2019
 
 import socket
 import threading
-#from helpClient import create_threads, calcPi
 
 lock = threading.Lock()
 a = 0
 pi = 0
 
-#sundeei twn client me ton server dimiourgei kai trexei ta threads kai steilnei to kommati tou pi pou upologise    
+
+
+#Connect the client to the server, Create and run the threads that calculate parallel the part of the Pi
+#that it must calculate and return the answer back to the server 
 def connect():
       global pi  
       
@@ -25,9 +27,9 @@ def connect():
       nb,mod,div,num = numbers.split('-')
       
       space = int(mod) + int(div)
-      local_mod,local_div = divmod(space,6) #briskw mod kai div tou diasthmatos pou prepei na upologisei se sxesh me twn arithmo twn purhnwn mou
+      local_mod,local_div = divmod(space,6) 
 
-      threads = create_threads(int(num),local_mod,local_div,int(nb))#ftiaxnw lista me ta threads mou
+      threads = create_threads(int(num),local_mod,local_div,int(nb))
             
 
       for thread in threads: #trexw ta thread
@@ -43,7 +45,9 @@ def connect():
       
       sk.close()
       
-#epistrefei lista me ta threads mou      
+
+
+#Creates the threads thath will calculate parallel the part of the Pi that the client must calculate
 def create_threads(num,local_mod,local_div,numberOfSteps):
     threads = []
     lower_floor = num
@@ -58,7 +62,7 @@ def create_threads(num,local_mod,local_div,numberOfSteps):
     return threads      
       
       
-#upologizei to kommati pi pou prepei kai to epistrefei
+#Calculate the part of the Pi for each thread
 def calcPi(beg,end,steps):
     """ Leibniz formula for arctan(1) = pi/4 """
     global pi
