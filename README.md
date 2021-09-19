@@ -9,7 +9,7 @@ Next, the figure 1.2 shows that the clients connected with the server and the re
 
 <img src="Images/2.png"></br><b>Figure 1.2 The clients connected to the server and calculated the Pi</b></br>
 
-In figure 1.2 at the three firts lines shows up the connection of each client with the server. At the fifth line shows up the Pi that the clients calculated. At the last line shows up the time that the clients needed to calculate the Pi.</br>
+In figure 1.2 at the three first lines shows up the connection of each client with the server. At the fifth line shows up the Pi that the clients calculated. At the last line shows up the time that the clients needed to calculate the Pi.</br>
 
 The figures 1.3, 1.4 and 1.5 show the part of the Pi that each of the three clients calculated.</br>
 
